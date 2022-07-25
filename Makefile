@@ -3,5 +3,5 @@ CFLAGS=-Wall -Werror -Wextra
 
 all: main.o
 
-main.o: main.c
-	$(CC) $(CFLAGS) main.c
+main.o: src/main.c
+	$(CC) $(CFLAGS) src/main.c -o build/main.o
