@@ -1,7 +1,8 @@
 #include "print.h"
 
-#include <stdio.h>
+// #include <stdio.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include "objects.h"
 
@@ -30,15 +31,15 @@ void print_scene(int **scene) {
         for (int j = 0; j < X_MAX; j++) {
             if (j != X_MAX - 1) {
                 if (scene[i][j] == 0) {
-                    printf(" ");
+                    printw(" ");
                 } else {
-                    printf("%c", scene[i][j]);
+                    printw("%c", scene[i][j]);
                 }
             } else {
                 if (scene[i][j] == 0)
-                    printf(" \n");
+                    printw(" \n");
                 else
-                    printf("%c\n", scene[i][j]);
+                    printw("%c\n", scene[i][j]);
             }
         }
 }
