@@ -1,0 +1,6 @@
+# ignore objects
+*.o
+*.out
+
+#ignore vscode dir
+.vscode
