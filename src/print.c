@@ -7,8 +7,8 @@
 
 int **form_scene(wolf wolf, int *error, int kadr) {
     int **matrix = calloc(Y_MAX, sizeof(int *));
-    int stars1[3][3] = {{32, 124, 32}, {45, '*', 45}, {32, 124, 32}};
-    int stars2[3][3] = {{32, 32, 32}, {32, '*', 32}, {32, 32, 32}};
+    int stars1[3][3] = {{32, 124, 32}, {45, '+', 45}, {32, 124, 32}};
+    int stars2[3][3] = {{32, 32, 32}, {32, '+', 32}, {32, 32, 32}};
     if (matrix) {
         for (int i = 0; i < Y_MAX; i++) {
             matrix[i] = calloc(X_MAX, sizeof(int));
