@@ -10,14 +10,14 @@ void init() {
     char c = 0;
     int stop = 1;
     int error = 0, kadr = 0;
-    char *path = "sprites/wolf.txt";
+    char *path = "sprites/wolf_2_1.txt";
     initscr();
     curs_set(0);
     nodelay(stdscr, TRUE);
     wolf *pwolf = NULL;
     pwolf = import_wolf(path, &error);
     while ((c = getch()) != EOF || stop != 0) {
-        usleep(100000);
+        usleep(500000);
         clear();
         refresh();
         stop = get_key(c);
