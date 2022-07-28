@@ -5,7 +5,7 @@
 
 #include "objects.h"
 
-int **form_scene(wolf wolf, int *error, int kadr, int inverse) {
+int **form_scene(wolf wolf, int *error, int kadr, int inverse, int move) {
     int **matrix = calloc(Y_MAX, sizeof(int *));
     int stars1[3][3] = {{0, 0, 0}, {0, '+', 0}, {0, 0, 0}};
     int stars2[3][3] = {{0, '|', 0}, {'-', '+', '-'}, {0, '|', 0}};
@@ -19,7 +19,7 @@ int **form_scene(wolf wolf, int *error, int kadr, int inverse) {
         }
         if (*error == 0) {
             wolf_tail_movement(&wolf, kadr);
-            insert_wolf(wolf, matrix, inverse);
+            insert_wolf(wolf, matrix, inverse, move);
             if (kadr == 1) {
                 insert_stars(stars1, matrix);
             } else {
@@ -40,10 +40,10 @@ void insert_stars(int stars[3][3], int **matrix) {
     }
 }
 
-void insert_wolf(wolf wolf, int **matrix, int inverse) {
+void insert_wolf(wolf wolf, int **matrix, int inverse, int move) {
     for (int i = Y_MAX - Y_WOLF; i < Y_MAX; i++)
         for (int j = 0; j < X_WOLF; j++) {
-            matrix[i][j] = wolf.matrix[i - Y_MAX + Y_WOLF][(inverse) ? X_WOLF - j - 1 : j];
+            matrix[i][move + j] = wolf.matrix[i - Y_MAX + Y_WOLF][(inverse) ? X_WOLF - j - 1 : j];
             if (inverse) {
                 if (matrix[i][j] == '(')
                     matrix[i][j] = ')';
