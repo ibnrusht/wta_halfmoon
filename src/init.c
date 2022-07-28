@@ -17,9 +17,8 @@ void init() {
     nodelay(stdscr, TRUE);
     wolf *pwolf = NULL;
     while ((c = getch()) != EOF || stop != 0) {
-        usleep(50000);
-        clear();
-        refresh();
+        erase();
+        usleep(5000);
         if (error == 0) {
             state_change(&tail_state, &star_state, &count);
             stop = get_key(c, &reverse, &move);

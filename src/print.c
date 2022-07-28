@@ -46,16 +46,16 @@ void insert_wolf(wolf wolf, int **matrix, int inverse, int move) {
         for (int j = 0; j < X_WOLF; j++) {
             matrix[i][move + j] = wolf.matrix[i - Y_MAX + Y_WOLF][(inverse) ? X_WOLF - j - 1 : j];
             if (inverse) {
-                if (matrix[i][j] == '(')
-                    matrix[i][j] = ')';
-                else if (matrix[i][j] == ')')
-                    matrix[i][j] = '(';
-                else if (matrix[i][j] == '/')
-                    matrix[i][j] = '\\';
-                else if (matrix[i][j] == '\\')
-                    matrix[i][j] = '/';
-                else if (matrix[i][j] == '{')
-                    matrix[i][j] = '}';
+                if (matrix[i][move + j] == '(')
+                    matrix[i][move + j] = ')';
+                else if (matrix[i][move + j] == ')')
+                    matrix[i][move + j] = '(';
+                else if (matrix[i][move + j] == '/')
+                    matrix[i][move + j] = '\\';
+                else if (matrix[i][move + j] == '\\')
+                    matrix[i][move + j] = '/';
+                else if (matrix[i][move + j] == '{')
+                    matrix[i][move + j] = '}';
             }
         }
 }
