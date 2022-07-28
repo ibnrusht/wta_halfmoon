@@ -3,5 +3,6 @@
 
 void init();
 int get_key(char ch, int *reverse, int *move);
+void state_change(int *tail_state, int *star_state, int *count);
 
 #endif  // SRC_INIT_H_

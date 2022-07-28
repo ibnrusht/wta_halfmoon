@@ -5,7 +5,8 @@
 
 #include "objects.h"
 
-int **form_scene(wolf wolf, int *error, int kadr, int inverse, int move) {
+int **form_scene(wolf wolf, int *error, int tail_state, int star_state,
+                 int inverse, int move) {
     int **matrix = calloc(Y_MAX, sizeof(int *));
     int stars1[3][3] = {{0, 0, 0}, {0, '+', 0}, {0, 0, 0}};
     int stars2[3][3] = {{0, '|', 0}, {'-', '+', '-'}, {0, '|', 0}};
@@ -18,9 +19,9 @@ int **form_scene(wolf wolf, int *error, int kadr, int inverse, int move) {
             }
         }
         if (*error == 0) {
-            wolf_tail_movement(&wolf, kadr);
+            wolf_tail_movement(&wolf, tail_state);
             insert_wolf(wolf, matrix, inverse, move);
-            if (kadr == 1) {
+            if (star_state == 0) {
                 insert_stars(stars1, matrix);
             } else {
                 insert_stars(stars2, matrix);
@@ -59,9 +60,9 @@ void insert_wolf(wolf wolf, int **matrix, int inverse, int move) {
         }
 }
 
-void wolf_tail_movement(wolf *wolf, int kadr) {
+void wolf_tail_movement(wolf *wolf, int state) {
     int k = 8, l = 9, m = 10;
-    if (kadr == 1) {
+    if (state == 1) {
         (*wolf).matrix[0][l] = (*wolf).matrix[0][l] - 1;
         (*wolf).matrix[1][m] = ')';
         (*wolf).matrix[1][l] = (*wolf).matrix[1][m];
