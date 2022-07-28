@@ -1,8 +1,8 @@
 #ifndef SRC_OBJECT_H_
 #define SRC_OBJECT_H_
 
-#define X_WOLF 35
-#define Y_WOLF 20
+#define X_WOLF 14
+#define Y_WOLF 5
 
 typedef struct wolf {
     int **matrix;

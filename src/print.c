@@ -6,10 +6,8 @@
 #include "objects.h"
 
 int **form_scene(wolf wolf, int *error, int tail_state, int star_state,
-                 int inverse, int move) {
+                 int inverse, int position, int move) {
     int **matrix = calloc(Y_MAX, sizeof(int *));
-    int stars1[3][3] = {{0, 0, 0}, {0, '+', 0}, {0, 0, 0}};
-    int stars2[3][3] = {{0, '|', 0}, {'-', '+', '-'}, {0, '|', 0}};
     if (matrix) {
         for (int i = 0; i < Y_MAX; i++) {
             matrix[i] = calloc(X_MAX, sizeof(int));
@@ -20,48 +18,49 @@ int **form_scene(wolf wolf, int *error, int tail_state, int star_state,
         }
         if (*error == 0) {
             wolf_tail_movement(&wolf, tail_state);
-            insert_wolf(wolf, matrix, inverse, move);
-            if (star_state == 0) {
-                insert_stars(stars1, matrix);
-            } else {
-                insert_stars(stars2, matrix);
-            }
+            wolf_movement(&wolf, move);
+            insert_stars(star_state, matrix);
+            insert_wolf(wolf, matrix, inverse, position);
         }
     }
     return matrix;
 }
 
-void insert_stars(int stars[3][3], int **matrix) {
+void insert_stars(int star_state, int **matrix) {
+    int stars1[3][3] = {{0, 0, 0}, {0, '+', 0}, {0, 0, 0}};
+    int stars2[3][3] = {{0, '|', 0}, {'-', '+', '-'}, {0, '|', 0}};
     for (int m = 0; m < X_MAX; m += 10) {
         int m_i = (m % 4) ? 3 : 6;
         for (int i = m_i; i < 3 + m_i; i++)
             for (int j = m; j < m + 3; j++) {
-                matrix[i][j] = stars[i - m_i][j - m];
+                matrix[i][j] = (star_state) ? stars1[i - m_i][j - m]
+                                            : stars2[i - m_i][j - m];
             }
     }
 }
 
-void insert_wolf(wolf wolf, int **matrix, int inverse, int move) {
+void insert_wolf(wolf wolf, int **matrix, int inverse, int position) {
     for (int i = Y_MAX - Y_WOLF; i < Y_MAX; i++)
         for (int j = 0; j < X_WOLF; j++) {
-            matrix[i][move + j] = wolf.matrix[i - Y_MAX + Y_WOLF][(inverse) ? X_WOLF - j - 1 : j];
+            matrix[i][position + j] =
+                wolf.matrix[i - Y_MAX + Y_WOLF][(inverse) ? X_WOLF - j - 1 : j];
             if (inverse) {
-                if (matrix[i][move + j] == '(')
-                    matrix[i][move + j] = ')';
-                else if (matrix[i][move + j] == ')')
-                    matrix[i][move + j] = '(';
-                else if (matrix[i][move + j] == '/')
-                    matrix[i][move + j] = '\\';
-                else if (matrix[i][move + j] == '\\')
-                    matrix[i][move + j] = '/';
-                else if (matrix[i][move + j] == '{')
-                    matrix[i][move + j] = '}';
+                if (matrix[i][position + j] == '(')
+                    matrix[i][position + j] = ')';
+                else if (matrix[i][position + j] == ')')
+                    matrix[i][position + j] = '(';
+                else if (matrix[i][position + j] == '/')
+                    matrix[i][position + j] = '\\';
+                else if (matrix[i][position + j] == '\\')
+                    matrix[i][position + j] = '/';
+                else if (matrix[i][position + j] == '{')
+                    matrix[i][position + j] = '}';
             }
         }
 }
 
 void wolf_tail_movement(wolf *wolf, int state) {
-    int k = 8, l = 9, m = 10;
+    int k = 0, l = 1, m = 2;
     if (state == 1) {
         (*wolf).matrix[0][l] = (*wolf).matrix[0][l] - 1;
         (*wolf).matrix[1][m] = ')';
@@ -70,6 +69,23 @@ void wolf_tail_movement(wolf *wolf, int state) {
         (*wolf).matrix[2][m] = '(';
         (*wolf).matrix[2][l] = (*wolf).matrix[2][m];
         (*wolf).matrix[2][k] = 0;
+    }
+}
+
+void wolf_movement(wolf *wolf, int move) {
+    if (move == 1) {
+        (*wolf).matrix[3][0] = '/';
+        (*wolf).matrix[3][2] = '/';
+        (*wolf).matrix[4][0] = '*';
+        (*wolf).matrix[4][2] = '*';
+        (*wolf).matrix[4][1] = 0;
+        (*wolf).matrix[4][3] = 0;
+        (*wolf).matrix[3][10] = ')';
+        (*wolf).matrix[3][11] = ')';
+        (*wolf).matrix[3][9] = 0;
+        (*wolf).matrix[4][9] = '*';
+        (*wolf).matrix[4][10] = '*';
+        (*wolf).matrix[4][11] = 0;
     }
 }
 
