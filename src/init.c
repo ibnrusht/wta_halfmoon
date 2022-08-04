@@ -1,3 +1,13 @@
+/*
+ * Created Date: Friday July 29th 2022
+ * Author: Amir Khadiev
+ * email: <ibn.rusht@gmail.com>
+ * -----
+ * Last Modified: Thu Aug 04 2022
+ * Modified By: Amir Khadiev
+ * -----
+ * Copyright 2022 Amir Khadiev
+ */
 #include "init.h"
 
 #include <ncurses.h>
@@ -12,7 +22,7 @@ void init() {
     int error = 0, count = 0, reverse = 0, position = 0;
     int move = 0;
     int tail_state = 0, star_state = 0;
-    char *path = "sprites/wolf_2_1.txt";
+    char *path = "../sprites/wolf_2_1.txt";
     initscr();
     curs_set(0);
     nodelay(stdscr, TRUE);
