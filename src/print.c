@@ -1,12 +1,22 @@
+/*
+ * Created Date: Friday July 29th 2022
+ * Author: Amir Khadiev
+ * email: <ibn.rusht@gmail.com>
+ * -----
+ * Last Modified: Fri Aug 05 2022
+ * Modified By: Amir Khadiev
+ * -----
+ * Copyright 2022 Amir Khadiev
+ */
 #include "print.h"
 
 #include <ncurses.h>
 #include <stdlib.h>
 
-#include "objects.h"
+#include "movements.h"
 
 int **form_scene(wolf wolf, int *error, int tail_state, int star_state,
-                 int inverse, int position, int move) {
+                 int inverse, int *position, int move) {
     int **matrix = calloc(Y_MAX, sizeof(int *));
     if (matrix) {
         for (int i = 0; i < Y_MAX; i++) {
@@ -39,54 +49,24 @@ void insert_stars(int star_state, int **matrix) {
     }
 }
 
-void insert_wolf(wolf wolf, int **matrix, int inverse, int position) {
+void insert_wolf(wolf wolf, int **matrix, int inverse, int *position) {
     for (int i = Y_MAX - Y_WOLF; i < Y_MAX; i++)
         for (int j = 0; j < X_WOLF; j++) {
-            matrix[i][position + j] =
+            matrix[i - position[1]][position[0] + j] =
                 wolf.matrix[i - Y_MAX + Y_WOLF][(inverse) ? X_WOLF - j - 1 : j];
             if (inverse) {
-                if (matrix[i][position + j] == '(')
-                    matrix[i][position + j] = ')';
-                else if (matrix[i][position + j] == ')')
-                    matrix[i][position + j] = '(';
-                else if (matrix[i][position + j] == '/')
-                    matrix[i][position + j] = '\\';
-                else if (matrix[i][position + j] == '\\')
-                    matrix[i][position + j] = '/';
-                else if (matrix[i][position + j] == '{')
-                    matrix[i][position + j] = '}';
+                if (matrix[i - position[1]][position[0] + j] == '(')
+                    matrix[i - position[1]][position[0] + j] = ')';
+                else if (matrix[i - position[1]][position[0] + j] == ')')
+                    matrix[i - position[1]][position[0] + j] = '(';
+                else if (matrix[i - position[1]][position[0] + j] == '/')
+                    matrix[i - position[1]][position[0] + j] = '\\';
+                else if (matrix[i - position[1]][position[0] + j] == '\\')
+                    matrix[i - position[1]][position[0] + j] = '/';
+                else if (matrix[i - position[1]][position[0] + j] == '{')
+                    matrix[i - position[1]][position[0] + j] = '}';
             }
         }
-}
-
-void wolf_tail_movement(wolf *wolf, int state) {
-    int k = 0, l = 1, m = 2;
-    if (state == 1) {
-        (*wolf).matrix[0][l] = (*wolf).matrix[0][l] - 1;
-        (*wolf).matrix[1][m] = ')';
-        (*wolf).matrix[1][l] = (*wolf).matrix[1][m];
-        (*wolf).matrix[1][k] = 0;
-        (*wolf).matrix[2][m] = '(';
-        (*wolf).matrix[2][l] = (*wolf).matrix[2][m];
-        (*wolf).matrix[2][k] = 0;
-    }
-}
-
-void wolf_movement(wolf *wolf, int move) {
-    if (move == 1) {
-        (*wolf).matrix[3][0] = '/';
-        (*wolf).matrix[3][2] = '/';
-        (*wolf).matrix[4][0] = '*';
-        (*wolf).matrix[4][2] = '*';
-        (*wolf).matrix[4][1] = 0;
-        (*wolf).matrix[4][3] = 0;
-        (*wolf).matrix[3][10] = ')';
-        (*wolf).matrix[3][11] = ')';
-        (*wolf).matrix[3][9] = 0;
-        (*wolf).matrix[4][9] = '*';
-        (*wolf).matrix[4][10] = '*';
-        (*wolf).matrix[4][11] = 0;
-    }
 }
 
 void print_scene(int **scene) {
