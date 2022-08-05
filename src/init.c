@@ -31,8 +31,6 @@ void init() {
     wolf *pwolf = NULL;
     while ((c = getch()) != EOF || stop != 0) {
         erase();
-        printf("c = %c\n", c);
-        // usleep(500);
         if (error == 0) {
             stop = get_key(c, &reverse, position, &move, &jump_state);
             wolf_jump(position, count, &jump_state);
