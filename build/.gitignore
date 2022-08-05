@@ -4,3 +4,6 @@
 
 #ignore vscode dir
 .vscode
+
+#ignore executable
+main
