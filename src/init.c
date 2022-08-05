@@ -31,6 +31,7 @@ void init() {
     wolf *pwolf = NULL;
     while ((c = getch()) != EOF || stop != 0) {
         erase();
+        printf("c = %c\n", c);
         // usleep(500);
         if (error == 0) {
             stop = get_key(c, &reverse, position, &move, &jump_state);
@@ -56,6 +57,7 @@ int get_key(char ch, int *reverse, int *position, int *move, int *jump_state) {
         case 'a':
             if (*reverse == 0) {
                 *reverse = 1;
+                position[0] = position[0] - 1;
                 *move = 1;
             } else {
                 if (position[0] > 0) {
@@ -67,6 +69,7 @@ int get_key(char ch, int *reverse, int *position, int *move, int *jump_state) {
         case 'd':
             if (*reverse == 1) {
                 *reverse = 0;
+                position[0] = position[0] + 1;
                 *move = 1;
             } else {
                 if (position[0] < X_MAX - X_WOLF - 1) {
