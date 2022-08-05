@@ -33,7 +33,7 @@ void init() {
         erase();
         if (error == 0) {
             stop = get_key(c, &reverse, position, &move, &jump_state);
-            wolf_jump(position, count, &jump_state);
+            wolf_jump(position, count, &jump_state, reverse);
             state_change(&tail_state, &star_state, &move, &count);
             pwolf = import_wolf(path, &error);
             int **scene = form_scene(*pwolf, &error, tail_state,
@@ -55,7 +55,6 @@ int get_key(char ch, int *reverse, int *position, int *move, int *jump_state) {
         case 'a':
             if (*reverse == 0) {
                 *reverse = 1;
-                position[0] = position[0] - 1;
                 *move = 1;
             } else {
                 if (position[0] > 0) {
@@ -67,7 +66,6 @@ int get_key(char ch, int *reverse, int *position, int *move, int *jump_state) {
         case 'd':
             if (*reverse == 1) {
                 *reverse = 0;
-                position[0] = position[0] + 1;
                 *move = 1;
             } else {
                 if (position[0] < X_MAX - X_WOLF - 1) {
@@ -83,6 +81,8 @@ int get_key(char ch, int *reverse, int *position, int *move, int *jump_state) {
             }
             break;
     }
+    if (*jump_state == 2)
+        *move = 1;
     return 1;
 }
 

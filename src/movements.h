@@ -8,6 +8,6 @@
 
 void wolf_tail_movement(wolf *wolf, int state);
 void wolf_movement(wolf *wolf, int move);
-void y_position_change(int *position, int *v0);
-void wolf_jump(int *position, int count, int *jump_state);
+void y_position_change(int *position, int *v0, int reverse);
+void wolf_jump(int *position, int count, int *jump_state, int reverse);
 #endif  //  SRC_MOVEMENTS_H

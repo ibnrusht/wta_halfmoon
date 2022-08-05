@@ -40,26 +40,32 @@ void wolf_movement(wolf *wolf, int move) {
     }
 }
 
-void y_position_change(int *position, int *v0) {
+void y_position_change(int *position, int *v0, int reverse) {
     if (*v0 >= 0) {
         position[1] = position[1] + *v0 + G;
     } else if (*v0 < 0 && position[1] > 0) {
         position[1] = position[1] - (-(*v0) + G);
     }
+    if (position[0] > 0 && position[0] < X_MAX - X_WOLF)
+        (reverse) ? position[0]-- : position[0]++;
+    else if (position[0] == 0 && reverse == 0)
+        position[0]++;
+    else if (position[0] == X_MAX - X_WOLF - 1 && reverse)
+        position[0]--;
     if (position[1] < 0 || position[1] >= Y_MAX - Y_WOLF)
         position[1] = 0;
     *v0 -= G;
 }
 
-void wolf_jump(int *position, int count, int *jump_state) {
+void wolf_jump(int *position, int count, int *jump_state, int reverse) {
     static int v0 = 0;
     if (*jump_state == 1) {
         v0 = V0;
-        y_position_change(position, &v0);
+        y_position_change(position, &v0, reverse);
         *jump_state = 2;
     } else if (*jump_state == 2) {
-        if (count % 500 == 0 && v0 >= -V0)
-            y_position_change(position, &v0);
+        if (count % 250 == 0 && v0 >= -V0)
+            y_position_change(position, &v0, reverse);
         else if (v0 < -V0) {
             v0 = 0;
             *jump_state = 0;
