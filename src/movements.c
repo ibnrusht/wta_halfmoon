@@ -3,7 +3,7 @@
  * Author: Amir Khadiev
  * email: <ibn.rusht@gmail.com>
  * -----
- * Last Modified: Thu Aug 04 2022
+ * Last Modified: Fri Aug 05 2022
  * Modified By: Amir Khadiev
  * -----
  * Copyright 2022 Amir Khadiev
@@ -40,17 +40,30 @@ void wolf_movement(wolf *wolf, int move) {
     }
 }
 
-void wolf_jump(int *move_y, int v0) {
-    static int v = 0;
-    if (v0 == V0)
-        v = v0;
-    if (v > 0) {
-        (*move_y) += v - G / 2;
-        v -= G;
-    } else if (v < 0) {
-        (*move_y) -= v + G / 2;
-        v += G;
-    } else {
-        v += G;
+void y_position_change(int *position, int *v0) {
+    if (*v0 >= 0) {
+        position[1] = position[1] + *v0 + G;
+    } else if (*v0 < 0 && position[1] > 0) {
+        position[1] = position[1] - (-(*v0) + G);
+    }
+    if (position[1] < 0 || position[1] >= Y_MAX - Y_WOLF)
+        position[1] = 0;
+    *v0 -= G;
+}
+
+void wolf_jump(int *position, int count, int *jump_state) {
+    static int v0 = 0;
+    if (*jump_state == 1) {
+        v0 = V0;
+        y_position_change(position, &v0);
+        *jump_state = 2;
+    } else if (*jump_state == 2) {
+        if (count % 500 == 0 && v0 >= -V0)
+            y_position_change(position, &v0);
+        else if (v0 < -V0) {
+            v0 = 0;
+            *jump_state = 0;
+            position[1] = 0;
+        }
     }
 }

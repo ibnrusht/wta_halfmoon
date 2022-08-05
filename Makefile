@@ -26,6 +26,5 @@ movements.o: $(SRCDIR)movements.c
 
 clean:
 	rm -rf $(BUILDDIR)*.o
-	rm -rf $(BUILDDIR)*.out
 
 rebuild: clean all

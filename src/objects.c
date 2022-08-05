@@ -3,7 +3,7 @@
  * Author: Amir Khadiev
  * email: <ibn.rusht@gmail.com>
  * -----
- * Last Modified: Thu Aug 04 2022
+ * Last Modified: Fri Aug 05 2022
  * Modified By: Amir Khadiev
  * -----
  * Copyright 2022 Amir Khadiev
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 wolf *import_wolf(char *path, int *error) {
-    wolf *p_wolf;
+    wolf *p_wolf = NULL;
     FILE *fp = fopen(path, "r");
     if (fp) {
         p_wolf = malloc(sizeof(wolf));

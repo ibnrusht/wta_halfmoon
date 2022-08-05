@@ -3,7 +3,7 @@
  * Author: Amir Khadiev
  * email: <ibn.rusht@gmail.com>
  * -----
- * Last Modified: Thu Aug 04 2022
+ * Last Modified: Fri Aug 05 2022
  * Modified By: Amir Khadiev
  * -----
  * Copyright 2022 Amir Khadiev
@@ -14,6 +14,7 @@
 #include <panel.h>
 #include <unistd.h>
 
+#include "movements.h"
 #include "print.h"
 
 void init() {
@@ -22,7 +23,7 @@ void init() {
     int error = 0, count = 0, reverse = 0;
     int position[2] = {0, 0};
     int move = 0;
-    int tail_state = 0, star_state = 0;
+    int tail_state = 0, star_state = 0, jump_state;
     char *path = "../sprites/wolf_2_1.txt";
     initscr();
     curs_set(0);
@@ -32,7 +33,8 @@ void init() {
         erase();
         // usleep(500);
         if (error == 0) {
-            stop = get_key(c, &reverse, position, &move);
+            stop = get_key(c, &reverse, position, &move, &jump_state);
+            wolf_jump(position, count, &jump_state);
             state_change(&tail_state, &star_state, &move, &count);
             pwolf = import_wolf(path, &error);
             int **scene = form_scene(*pwolf, &error, tail_state,
@@ -47,7 +49,7 @@ void init() {
     endwin();
 }
 
-int get_key(char ch, int *reverse, int *position, int *move) {
+int get_key(char ch, int *reverse, int *position, int *move, int *jump_state) {
     switch (ch) {
         case 'q':
             return 0;
@@ -73,6 +75,12 @@ int get_key(char ch, int *reverse, int *position, int *move) {
                 }
             }
             break;
+        case ' ':
+            if (*jump_state == 0) {
+                *jump_state = 1;
+                *move = 1;
+            }
+            break;
     }
     return 1;
 }
@@ -84,7 +92,7 @@ void state_change(int *tail_state, int *star_state, int *move, int *count) {
         *star_state = (*star_state) ? 0 : 1;
     if (*count % 1000 == 0 && *move == 1)
         *move = 0;
-    if (*count == 1000)
+    if (*count == 10000)
         (*count) = 0;
     (*count)++;
 }
